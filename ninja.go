@@ -1,6 +1,7 @@
 package ninja
 
 import (
+	"log"
 	"net/http"
 )
 
@@ -17,7 +18,7 @@ func New() *Handle {
 }
 
 func (h *Handle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-
+	log.Println("Ninja - enter")
 	h.mux.ServeHTTP(w, r)
 }
 
@@ -25,7 +26,7 @@ func (h *Handle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func (h *Handle) Route(pattern string, route Route, middlewares ...Middleware) *Handle {
 
 	h.mux.HandleFunc(pattern, func(w http.ResponseWriter, r *http.Request) {
-
+		log.Printf("Ninja - %s - %s\n", r.Method, r.URL.String())
 		for _, middleware := range middlewares {
 			if middleware(w, r) != nil {
 				return
